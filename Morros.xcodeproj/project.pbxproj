@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8950E2E626F77B5800C096D7 /* ModelsInterfaces.h in Headers */ = {isa = PBXBuildFile; fileRef = 8950E2E426F77B5800C096D7 /* ModelsInterfaces.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8950E2E926F77B5800C096D7 /* ModelsInterfaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */; };
+		8950E2EA26F77B5800C096D7 /* ModelsInterfaces.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8950E2EF26F77B8200C096D7 /* MProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950E2EE26F77B8200C096D7 /* MProject.swift */; };
+		8950E2F126F77BC800C096D7 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950E2F026F77BC800C096D7 /* Palette.swift */; };
+		8950E2F826F77C2600C096D7 /* ModelsInterfaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */; };
 		8970991026D2DE4D001FD2F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970990F26D2DE4D001FD2F2 /* AppDelegate.swift */; };
 		8970991226D2DE4D001FD2F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970991126D2DE4D001FD2F2 /* SceneDelegate.swift */; };
 		8970991426D2DE4D001FD2F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970991326D2DE4D001FD2F2 /* ViewController.swift */; };
@@ -20,10 +26,24 @@
 		8970994C26D2DE93001FD2F2 /* models.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8970994426D2DE93001FD2F2 /* models.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8970995826D2DEBB001FD2F2 /* MProjectHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */; };
 		8970995A26D2DEBB001FD2F2 /* models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8970994426D2DE93001FD2F2 /* models.framework */; };
-		8970996126D2DF43001FD2F2 /* MProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970996026D2DF43001FD2F2 /* MProject.swift */; };
+		8970996126D2DF43001FD2F2 /* MProjectHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970996026D2DF43001FD2F2 /* MProjectHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8950E2E726F77B5800C096D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8970990426D2DE4D001FD2F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8950E2E126F77B5700C096D7;
+			remoteInfo = ModelsInterfaces;
+		};
+		8950E2F526F77BED00C096D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8970990426D2DE4D001FD2F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8950E2E126F77B5700C096D7;
+			remoteInfo = ModelsInterfaces;
+		};
 		8970992326D2DE50001FD2F2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8970990426D2DE4D001FD2F2 /* Project object */;
@@ -61,6 +81,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8950E2EA26F77B5800C096D7 /* ModelsInterfaces.framework in Embed Frameworks */,
 				8970994C26D2DE93001FD2F2 /* models.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -69,6 +90,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ModelsInterfaces.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8950E2E426F77B5800C096D7 /* ModelsInterfaces.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelsInterfaces.h; sourceTree = "<group>"; };
+		8950E2E526F77B5800C096D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8950E2EE26F77B8200C096D7 /* MProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProject.swift; sourceTree = "<group>"; };
+		8950E2F026F77BC800C096D7 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		8970990C26D2DE4D001FD2F2 /* Morros.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Morros.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8970990F26D2DE4D001FD2F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8970991126D2DE4D001FD2F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,14 +115,22 @@
 		8970995526D2DEBB001FD2F2 /* modelsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = modelsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProjectHelperTests.swift; sourceTree = "<group>"; };
 		8970995926D2DEBB001FD2F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8970996026D2DF43001FD2F2 /* MProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProject.swift; sourceTree = "<group>"; };
+		8970996026D2DF43001FD2F2 /* MProjectHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProjectHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8950E2DF26F77B5700C096D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8970990926D2DE4D001FD2F2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8950E2E926F77B5800C096D7 /* ModelsInterfaces.framework in Frameworks */,
 				8970994B26D2DE93001FD2F2 /* models.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,6 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8950E2F826F77C2600C096D7 /* ModelsInterfaces.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +168,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8950E2E326F77B5800C096D7 /* ModelsInterfaces */ = {
+			isa = PBXGroup;
+			children = (
+				8950E2E426F77B5800C096D7 /* ModelsInterfaces.h */,
+				8950E2E526F77B5800C096D7 /* Info.plist */,
+				8950E2EE26F77B8200C096D7 /* MProject.swift */,
+				8950E2F026F77BC800C096D7 /* Palette.swift */,
+			);
+			path = ModelsInterfaces;
+			sourceTree = "<group>";
+		};
+		8950E2F226F77BED00C096D7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8970990326D2DE4D001FD2F2 = {
 			isa = PBXGroup;
 			children = (
@@ -141,7 +194,9 @@
 				8970993026D2DE50001FD2F2 /* MorrosUITests */,
 				8970994526D2DE93001FD2F2 /* models */,
 				8970995626D2DEBB001FD2F2 /* modelsTests */,
+				8950E2E326F77B5800C096D7 /* ModelsInterfaces */,
 				8970990D26D2DE4D001FD2F2 /* Products */,
+				8950E2F226F77BED00C096D7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -153,6 +208,7 @@
 				8970992D26D2DE50001FD2F2 /* MorrosUITests.xctest */,
 				8970994426D2DE93001FD2F2 /* models.framework */,
 				8970995526D2DEBB001FD2F2 /* modelsTests.xctest */,
+				8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -194,7 +250,7 @@
 			children = (
 				8970994626D2DE93001FD2F2 /* models.h */,
 				8970994726D2DE93001FD2F2 /* Info.plist */,
-				8970996026D2DF43001FD2F2 /* MProject.swift */,
+				8970996026D2DF43001FD2F2 /* MProjectHelper.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -211,6 +267,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		8950E2DD26F77B5700C096D7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8950E2E626F77B5800C096D7 /* ModelsInterfaces.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8970993F26D2DE93001FD2F2 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -222,6 +286,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		8950E2E126F77B5700C096D7 /* ModelsInterfaces */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8950E2EB26F77B5800C096D7 /* Build configuration list for PBXNativeTarget "ModelsInterfaces" */;
+			buildPhases = (
+				8950E2DD26F77B5700C096D7 /* Headers */,
+				8950E2DE26F77B5700C096D7 /* Sources */,
+				8950E2DF26F77B5700C096D7 /* Frameworks */,
+				8950E2E026F77B5700C096D7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ModelsInterfaces;
+			productName = ModelsInterfaces;
+			productReference = 8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		8970990B26D2DE4D001FD2F2 /* Morros */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8970993626D2DE50001FD2F2 /* Build configuration list for PBXNativeTarget "Morros" */;
@@ -235,6 +317,7 @@
 			);
 			dependencies = (
 				8970994A26D2DE93001FD2F2 /* PBXTargetDependency */,
+				8950E2E826F77B5800C096D7 /* PBXTargetDependency */,
 			);
 			name = Morros;
 			productName = Morros;
@@ -289,6 +372,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8950E2F626F77BED00C096D7 /* PBXTargetDependency */,
 			);
 			name = models;
 			productName = models;
@@ -322,6 +406,10 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
+					8950E2E126F77B5700C096D7 = {
+						CreatedOnToolsVersion = 12.5.1;
+						LastSwiftMigration = 1250;
+					};
 					8970990B26D2DE4D001FD2F2 = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -360,11 +448,19 @@
 				8970992C26D2DE50001FD2F2 /* MorrosUITests */,
 				8970994326D2DE93001FD2F2 /* models */,
 				8970995426D2DEBB001FD2F2 /* modelsTests */,
+				8950E2E126F77B5700C096D7 /* ModelsInterfaces */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8950E2E026F77B5700C096D7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8970990A26D2DE4D001FD2F2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -406,6 +502,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8950E2DE26F77B5700C096D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8950E2F126F77BC800C096D7 /* Palette.swift in Sources */,
+				8950E2EF26F77B8200C096D7 /* MProject.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8970990826D2DE4D001FD2F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -436,7 +541,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8970996126D2DF43001FD2F2 /* MProject.swift in Sources */,
+				8970996126D2DF43001FD2F2 /* MProjectHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +556,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8950E2E826F77B5800C096D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8950E2E126F77B5700C096D7 /* ModelsInterfaces */;
+			targetProxy = 8950E2E726F77B5800C096D7 /* PBXContainerItemProxy */;
+		};
+		8950E2F626F77BED00C096D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8950E2E126F77B5700C096D7 /* ModelsInterfaces */;
+			targetProxy = 8950E2F526F77BED00C096D7 /* PBXContainerItemProxy */;
+		};
 		8970992426D2DE50001FD2F2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8970990B26D2DE4D001FD2F2 /* Morros */;
@@ -493,6 +608,63 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		8950E2EC26F77B5800C096D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BNC7UR7VG4;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = ModelsInterfaces/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mmoldes.morros.ModelsInterfaces;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8950E2ED26F77B5800C096D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BNC7UR7VG4;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = ModelsInterfaces/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mmoldes.morros.ModelsInterfaces;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		8970993426D2DE50001FD2F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -831,6 +1003,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8950E2EB26F77B5800C096D7 /* Build configuration list for PBXNativeTarget "ModelsInterfaces" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8950E2EC26F77B5800C096D7 /* Debug */,
+				8950E2ED26F77B5800C096D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8970990726D2DE4D001FD2F2 /* Build configuration list for PBXProject "Morros" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

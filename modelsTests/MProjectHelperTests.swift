@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import ModelsInterfaces
 
 @testable import models
 class MProjectHelperTests: XCTestCase {
