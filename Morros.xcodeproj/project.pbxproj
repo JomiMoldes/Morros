@@ -18,7 +18,7 @@
 		8970994826D2DE93001FD2F2 /* models.h in Headers */ = {isa = PBXBuildFile; fileRef = 8970994626D2DE93001FD2F2 /* models.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8970994B26D2DE93001FD2F2 /* models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8970994426D2DE93001FD2F2 /* models.framework */; };
 		8970994C26D2DE93001FD2F2 /* models.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8970994426D2DE93001FD2F2 /* models.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8970995826D2DEBB001FD2F2 /* modelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970995726D2DEBB001FD2F2 /* modelsTests.swift */; };
+		8970995826D2DEBB001FD2F2 /* MProjectHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */; };
 		8970995A26D2DEBB001FD2F2 /* models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8970994426D2DE93001FD2F2 /* models.framework */; };
 		8970996126D2DF43001FD2F2 /* MProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970996026D2DF43001FD2F2 /* MProject.swift */; };
 /* End PBXBuildFile section */
@@ -87,7 +87,7 @@
 		8970994626D2DE93001FD2F2 /* models.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = models.h; sourceTree = "<group>"; };
 		8970994726D2DE93001FD2F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8970995526D2DEBB001FD2F2 /* modelsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = modelsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8970995726D2DEBB001FD2F2 /* modelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = modelsTests.swift; sourceTree = "<group>"; };
+		8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProjectHelperTests.swift; sourceTree = "<group>"; };
 		8970995926D2DEBB001FD2F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8970996026D2DF43001FD2F2 /* MProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -202,7 +202,7 @@
 		8970995626D2DEBB001FD2F2 /* modelsTests */ = {
 			isa = PBXGroup;
 			children = (
-				8970995726D2DEBB001FD2F2 /* modelsTests.swift */,
+				8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */,
 				8970995926D2DEBB001FD2F2 /* Info.plist */,
 			);
 			path = modelsTests;
@@ -444,7 +444,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8970995826D2DEBB001FD2F2 /* modelsTests.swift in Sources */,
+				8970995826D2DEBB001FD2F2 /* MProjectHelperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
