@@ -16,18 +16,20 @@ import ModelsInterfaces
 // make everything Codable and save it locally
 
 public protocol MProjectHelperProtocol {
-    func tasksByDays(_ project: MProject) -> [UInt: [MTask]]
-    func addTask(_ project: inout MProject, _ task: MTask) throws
-    func removeTask(_ project: inout MProject, taskId: MTask.Id)
+    func tasksSortedByDays(_ project: MProject) -> [UInt: [MTask]]
+    func addTask(_ project: inout MProject, _ task: MTask, startDay: UInt) throws
+    func removeTask(_ project: inout MProject, taskId: MTask.Id, startDay: UInt) throws
     func addRelationship(_ project: inout MProject, _ relationship: Relationship) throws
-    func removeRelationship(_ project: inout MProject, _ relationshipId: Relationship.Id)
+    func removeRelationship(_ project: inout MProject, _ relationshipId: Relationship.Id, dependentStartDay: UInt?) throws
+    func isIndependent(_ project: MProject, _ task: MTask) -> Bool
 }
+
 public class MProjectHelper: MProjectHelperProtocol {
-    public func tasksByDays(_ project: MProject) -> [UInt: [MTask]] {
+    public func tasksSortedByDays(_ project: MProject) -> [UInt: [MTask]] {
         var dic: [UInt: [MTask]] = [UInt: [MTask]]()
         dic[0] = [MTask]()
         project.tasks.forEach { task in
-            let days = UInt(getDays(project, task: task))
+            let days = UInt(getDistanceFromItsInfluencerInDays(project, task: task))
             if dic.index(forKey: days) == nil {
                 dic[days] = [MTask]()
             }
@@ -36,41 +38,128 @@ public class MProjectHelper: MProjectHelperProtocol {
         return dic
     }
 
-    public func addTask(_ project: inout MProject, _ task: MTask) throws {
+    public func addTask(_ project: inout MProject, _ task: MTask, startDay: UInt) throws {
+        // Users won't create a task without knowing when it should start
         try canAddTask(project, task)
         project.tasks.append(task)
+        // At the beginning we add them as independent, until they become part of a relationship
+        self.addTaskAsIndependent(&project, task, startDay: startDay)
     }
 
-    public func removeTask(_ project: inout MProject, taskId: MTask.Id) {
+    private func addTaskAsIndependent(_ project: inout MProject, _ task: MTask, startDay: UInt) {
+        if project.independentTasks.index(forKey: startDay) == nil {
+            project.independentTasks[startDay] = [MTask]()
+        }
+        project.independentTasks[startDay]?.append(task)
+    }
+
+    public func removeTask(_ project: inout MProject, taskId: MTask.Id, startDay: UInt) throws {
+        guard let task = project.tasks.first(where: { $0.id == taskId }) else {
+            throw MEditingProjectError.unexistingTasks([taskId])
+        }
         project.tasks.removeAll(where: { $0.id == taskId })
-        // remove relationships
+
+        // if the task is influencer, we'll remove the relationship giving a startDay for the dependant to become independent
+        // if the task is dependant it won't affect the influencer
+        var dependantRelationships = [Relationship]()
+        var influencerRelationships = [Relationship]()
+        project.relationships.forEach {
+            if $0.dependant.id == taskId {
+                dependantRelationships.append($0)
+                return
+            }
+            if $0.influencer.id == taskId {
+                influencerRelationships.append($0)
+            }
+        }
+        
+        try dependantRelationships.forEach {
+            try self.removeRelationship(&project, $0.id, dependentStartDay: nil)
+        }
+        try influencerRelationships.forEach {
+            let dependentStartDay = Int(startDay + task.days) + $0.daysGap
+            try self.removeRelationship(&project,
+                                        $0.id,
+                                        dependentStartDay: dependentStartDay >= 0 ? UInt(dependentStartDay) : 0)
+        }
+
+        self.removeIndependentTask(&project, taskId)
     }
 
     public func addRelationship(_ project: inout MProject, _ relationship: Relationship) throws {
         try canAddRelationship(project, relationship)
         project.relationships.append(relationship)
+
+        // The dependant cannot be independent anymore
+        self.removeIndependentTask(&project, relationship.dependant.id)
     }
 
-    public func removeRelationship(_ project: inout MProject, _ relationshipId: Relationship.Id) {
+    public func removeRelationship(_ project: inout MProject, _ relationshipId: Relationship.Id, dependentStartDay: UInt?) throws {
+        guard let relationship = project.relationships.first(where: { $0.id == relationshipId }) else {
+            throw MEditingProjectError.unexistingRelationship(relationshipId)
+        }
         project.relationships.removeAll(where: { $0.id == relationshipId } )
-        // recreate connections
+
+        // we make the dependant independent if it doesn't depend on other tasks
+        if let dependentStartDay = dependentStartDay, !self.dependsOnAnyTask(project, relationship.dependant) {
+            self.addTaskAsIndependent(&project, relationship.dependant, startDay: dependentStartDay)
+        }
+    }
+
+    public func isIndependent(_ project: MProject, _ task: MTask) -> Bool {
+        for (key, _) in project.independentTasks {
+            if let list = project.independentTasks[key] {
+                if list.contains( where: { $0.id == task.id }) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
 }
 
 private extension MProjectHelper {
 
-    private func getDays(_ project: MProject, task: MTask) -> Int {
-        guard let relationship = project.relationships.first(where: { $0.dependant.id == task.id })  else {
-            return 0
+    private func removeIndependentTask(_ project: inout MProject, _ taskId: MTask.Id) {
+        for (key, _) in project.independentTasks {
+            if project.independentTasks[key] != nil {
+                project.independentTasks[key]?.removeAll(where: { $0.id == taskId })
+            }
         }
-        return getDays(project, task: relationship.influencer) + Int(relationship.influencer.days) + relationship.daysGap
+    }
+
+    private func getDistanceFromItsInfluencerInDays(_ project: MProject, task: MTask) -> Int {
+        guard let relationship = project.relationships.first(where: { $0.dependant.id == task.id })  else {
+            return Int(getStartDay(project, for: task))
+        }
+        return getDistanceFromItsInfluencerInDays(project, task: relationship.influencer) + Int(relationship.influencer.days) + relationship.daysGap
+    }
+
+    private func getStartDay(_ project: MProject, for task: MTask) -> UInt {
+        for (key, _) in project.independentTasks {
+            if let list = project.independentTasks[key] {
+                if list.contains(task) {
+                    return key
+                }
+            }
+        }
+        return 0
     }
 
     private func canAddTask(_ project: MProject, _ task: MTask) throws {
         if project.tasks.contains(task) { throw MEditingProjectError.taskAlreadyExists }
         if project.tasks.first(where: { $0.id == task.id }) != nil { throw MEditingProjectError.taskIdRepeated }
         if task.days <= 0 { throw MEditingProjectError.daysBiggerThanZero }
+    }
+
+    private func dependsOnAnyTask(_ project: MProject, _ task: MTask) -> Bool {
+        for relationship in project.relationships {
+            if relationship.dependant.id == task.id {
+                return true
+            }
+        }
+        return false
     }
 
     private func canAddRelationship(_ project: MProject, _ relationship: Relationship) throws {

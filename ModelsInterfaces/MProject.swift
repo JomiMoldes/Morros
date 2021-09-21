@@ -13,6 +13,7 @@ public struct MProject {
     public var tasks: [MTask] = [MTask]()
     public var relationships: [Relationship] = [Relationship]()
     public let startDate: Date
+    public var independentTasks: [UInt: [MTask]] = [UInt: [MTask]]()
 
     public init(id: Int,
                 name: String,
@@ -27,6 +28,7 @@ public enum MEditingProjectError: Error, Equatable {
     case taskAlreadyExists, taskIdRepeated, unexistingTasks([MTask.Id]), daysBiggerThanZero
     case cycleReference, relationshipAlreadyExists, relationshipIdRepeated
     case taskAlreadyDependsOnInfluencerIndirectly
+    case unexistingRelationship(Relationship.Id)
 }
 
 public struct MTask: Equatable {
