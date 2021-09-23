@@ -322,6 +322,46 @@ class MProjectHelperTests: XCTestCase {
         }
     }
 
+    func testModifyTask() throws {
+        let sut = createSUT()
+        var project = createProject()
+        let originalName = "Original name"
+        let originalDays: UInt = 10
+        let originalColor = Palette.blue
+        let newName = "New name"
+        let newDays: UInt = 100
+        let newColor = Palette.orange
+        let task1StartingDay: UInt = 0
+        let task1 = createTask(id: .init(1),
+                               name: originalName,
+                               days: originalDays,
+                               color: originalColor)
+
+        let task2 = createTask(id: .init(2),
+                               name: "Task 2 Name",
+                               days: 5)
+
+        try sut.addTask(&project, task1, startDay: task1StartingDay)
+        try sut.addTask(&project, task2, startDay: 0)
+
+        let relationship = Relationship(id: .init(1), influencer: task1, dependant: task2, daysGap: 2)
+
+        try sut.addRelationship(&project, relationship)
+
+        let replacingTask = createTask(id: .init(1),
+                                       name: newName,
+                                       days: newDays,
+                                       color: newColor)
+
+        XCTAssertEqual(sut.tasksSortedByDays(project)[0], [task1])
+        XCTAssertEqual(sut.tasksSortedByDays(project)[task1StartingDay + originalDays + 2], [task2])
+
+        try sut.editTask(&project, replacingTask)
+
+        XCTAssertEqual(sut.tasksSortedByDays(project)[0], [replacingTask])
+        XCTAssertEqual(sut.tasksSortedByDays(project)[task1StartingDay + originalDays + 2], [task2])
+    }
+
     // MARK: Private
     private func createSUT() -> MProjectHelperProtocol {
         return MProjectHelper()

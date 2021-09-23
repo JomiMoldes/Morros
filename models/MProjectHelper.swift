@@ -1,5 +1,5 @@
 //
-//  MProject.swift
+//  MProjectHelper.swift
 //  models
 //
 //  Created by Moldes, Miguel on 22/08/2021.
@@ -9,10 +9,6 @@ import Foundation
 import UIKit
 import ModelsInterfaces
 
-// definir cómo guardar las tareas que no tengan dependencias
-// when removing tasks, -> remove relationships
-// when removing relationships -> recreate connections
-// edit tasks? maybe recreate them? how to keep relationships?
 // make everything Codable and save it locally
 
 public protocol MProjectHelperProtocol {
@@ -22,6 +18,7 @@ public protocol MProjectHelperProtocol {
     func addRelationship(_ project: inout MProject, _ relationship: Relationship) throws
     func removeRelationship(_ project: inout MProject, _ relationshipId: Relationship.Id, dependentStartDay: UInt?) throws
     func isIndependent(_ project: MProject, _ task: MTask) -> Bool
+    func editTask(_ project: inout MProject, _ modifiedTask: MTask) throws
 }
 
 public class MProjectHelper: MProjectHelperProtocol {
@@ -117,6 +114,25 @@ public class MProjectHelper: MProjectHelperProtocol {
         return false
     }
 
+    /*
+     The way to edit a task is to replacing it with a new one with the same id.
+     It removes the old task from all the lists whre it appears and then
+     we add the new task in those lists
+     */
+    public func editTask(_ project: inout MProject, _ modifiedTask: MTask) throws {
+        // we should check first if we can add the task before removing it
+        try canAddTask(project, modifiedTask, checkForId: false)
+        let isIndependent = isIndependent(project, modifiedTask)
+        let startDay = getStartDay(project, for: modifiedTask)
+        removeIndependentTask(&project, modifiedTask.id)
+        project.tasks.removeAll(where: { $0.id == modifiedTask.id })
+
+        if isIndependent {
+            addTaskAsIndependent(&project, modifiedTask, startDay: startDay)
+        }
+        project.tasks.append(modifiedTask)
+    }
+
 }
 
 private extension MProjectHelper {
@@ -147,9 +163,12 @@ private extension MProjectHelper {
         return 0
     }
 
-    private func canAddTask(_ project: MProject, _ task: MTask) throws {
+    private func canAddTask(_ project: MProject, _ task: MTask, checkForId: Bool = true) throws {
         if project.tasks.contains(task) { throw MEditingProjectError.taskAlreadyExists }
-        if project.tasks.first(where: { $0.id == task.id }) != nil { throw MEditingProjectError.taskIdRepeated }
+        // When we "edit" a task we replace it for a new one with the same id, so in that case we don't compare ids
+        if checkForId {
+            if project.tasks.first(where: { $0.id == task.id }) != nil { throw MEditingProjectError.taskIdRepeated }
+        }
         if task.days <= 0 { throw MEditingProjectError.daysBiggerThanZero }
     }
 
