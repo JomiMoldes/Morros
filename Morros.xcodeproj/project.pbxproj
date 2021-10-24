@@ -27,6 +27,7 @@
 		8970995826D2DEBB001FD2F2 /* MProjectHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */; };
 		8970995A26D2DEBB001FD2F2 /* models.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8970994426D2DE93001FD2F2 /* models.framework */; };
 		8970996126D2DF43001FD2F2 /* MProjectHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970996026D2DF43001FD2F2 /* MProjectHelper.swift */; };
+		897AC54026FE70AD0029B6AF /* Morros.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 897AC53E26FE70AD0029B6AF /* Morros.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,7 @@
 		8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProjectHelperTests.swift; sourceTree = "<group>"; };
 		8970995926D2DEBB001FD2F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8970996026D2DF43001FD2F2 /* MProjectHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProjectHelper.swift; sourceTree = "<group>"; };
+		897AC53F26FE70AD0029B6AF /* Morros.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Morros.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 		8970990326D2DE4D001FD2F2 = {
 			isa = PBXGroup;
 			children = (
+				897AC53E26FE70AD0029B6AF /* Morros.xcdatamodeld */,
 				8970990E26D2DE4D001FD2F2 /* Morros */,
 				8970992526D2DE50001FD2F2 /* MorrosTests */,
 				8970993026D2DE50001FD2F2 /* MorrosUITests */,
@@ -516,6 +519,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8970991426D2DE4D001FD2F2 /* ViewController.swift in Sources */,
+				897AC54026FE70AD0029B6AF /* Morros.xcdatamodeld in Sources */,
 				8970991026D2DE4D001FD2F2 /* AppDelegate.swift in Sources */,
 				8970991226D2DE4D001FD2F2 /* SceneDelegate.swift in Sources */,
 			);
@@ -1067,6 +1071,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		897AC53E26FE70AD0029B6AF /* Morros.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				897AC53F26FE70AD0029B6AF /* Morros.xcdatamodel */,
+			);
+			currentVersion = 897AC53F26FE70AD0029B6AF /* Morros.xcdatamodel */;
+			path = Morros.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 8970990426D2DE4D001FD2F2 /* Project object */;
 }
