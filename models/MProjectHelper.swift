@@ -15,7 +15,7 @@ public protocol MProjectHelperProtocol {
     var project: MProject { get }
     func tasksSortedByDays() -> [UInt: [MTask]]
     func addTask(_ task: MTask, startDay: UInt) throws
-    func removeTask(taskId: MTask.Id, startDay: UInt) throws
+    func removeTask(_ task: MTask, startDay: UInt) throws
     func addRelationship(_ relationship: Relationship) throws
     func removeRelationship(_ relationshipId: Relationship.Id, dependentStartDay: UInt?) throws
     func isIndependent(_ task: MTask) -> Bool
@@ -44,16 +44,17 @@ public class MProjectHelper: MProjectHelperProtocol {
     public func addTask(_ task: MTask, startDay: UInt) throws {
         // Users won't create a task without knowing when it should start
         try canAddTask(task)
-        project.tasks.append(task)
+        project.tasks.insert(task)
         // At the beginning we add them as independent, until they become part of a relationship
         self.addTaskAsIndependent(task, startDay: startDay)
     }
 
-    public func removeTask(taskId: MTask.Id, startDay: UInt) throws {
-        guard let task = project.tasks.first(where: { $0.id == taskId }) else {
-            throw MEditingProjectError.unexistingTasks([taskId])
+    public func removeTask(_ task: MTask, startDay: UInt) throws {
+        guard project.tasks.contains(task) else {
+            throw MEditingProjectError.unexistingTasks([task.id])
         }
-        project.tasks.removeAll(where: { $0.id == taskId })
+        project.tasks.remove(task)
+        let taskId = task.id
 
         // if the task is influencer, we'll remove the relationship giving a startDay for the dependant to become independent
         // if the task is dependant it won't affect the influencer
@@ -112,23 +113,27 @@ public class MProjectHelper: MProjectHelperProtocol {
         return false
     }
 
+    // TO DO: think a better way to edit tasks.
     /*
-     The way to edit a task is to replacing it with a new one with the same id.
+     The way to edit a task is replacing it with a new one with the same id.
      It removes the old task from all the lists whre it appears and then
      we add the new task in those lists
      */
     public func editTask(_ modifiedTask: MTask) throws {
         // we should check first if we can add the task before removing it
         try canAddTask(modifiedTask, checkForId: false)
+        guard let task = project.tasks.first(where: { $0.id == modifiedTask.id }) else {
+            throw MEditingProjectError.unexistingTasks([modifiedTask.id])
+        }
         let isIndependent = isIndependent(modifiedTask)
         let startDay = getStartDay(for: modifiedTask)
-        removeIndependentTask(modifiedTask.id)
-        project.tasks.removeAll(where: { $0.id == modifiedTask.id })
+        removeIndependentTask(task.id)
+        try removeTask(task, startDay: startDay)
 
         if isIndependent {
             addTaskAsIndependent(modifiedTask, startDay: startDay)
         }
-        project.tasks.append(modifiedTask)
+        project.tasks.insert(modifiedTask)
     }
 
 }

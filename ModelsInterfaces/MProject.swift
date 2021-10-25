@@ -7,10 +7,11 @@
 
 import Foundation
 
+// TO DO: replace arrays by sets
 public struct MProject {
     public let id: Int
     public let name: String
-    public var tasks: [MTask] = [MTask]()
+    public var tasks: Set<MTask> = Set<MTask>()
     public var relationships: [Relationship] = [Relationship]()
     public let startDate: Date
     public var independentTasks: [UInt: [MTask]] = [UInt: [MTask]]()
@@ -31,8 +32,9 @@ public enum MEditingProjectError: Error, Equatable {
     case unexistingRelationship(Relationship.Id)
 }
 
-public struct MTask: Equatable {
-    public struct Id: Equatable {
+public struct MTask: Equatable, Hashable{
+
+    public struct Id: Equatable, Hashable {
         public init(_ id: Int) {
             self.id = id
         }

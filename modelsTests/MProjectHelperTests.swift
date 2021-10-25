@@ -23,7 +23,7 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertEqual(sut.project.tasks.count, 3)
         XCTAssertEqual(sut.project.tasks, [task1, task2, task3])
 
-        try sut.removeTask(taskId: task2.id, startDay: 0)
+        try sut.removeTask(task2, startDay: 0)
         XCTAssertEqual(sut.project.tasks.count, 2)
         XCTAssertEqual(sut.project.tasks, [task1, task3])
     }
@@ -42,13 +42,13 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertEqual(sut.project.independentTasks[0]?.last, task2)
         XCTAssertEqual(sut.project.independentTasks[5]?.first, task3)
 
-        try sut.removeTask(taskId: task1.id, startDay: 0)
+        try sut.removeTask(task1, startDay: 0)
         XCTAssertEqual(sut.project.independentTasks[0]?.first, task2)
 
-        try sut.removeTask(taskId: task2.id, startDay: 0)
+        try sut.removeTask(task2, startDay: 0)
         XCTAssertNil(sut.project.independentTasks[0]?.first)
 
-        try sut.removeTask(taskId: task3.id, startDay: 0)
+        try sut.removeTask(task3, startDay: 0)
         XCTAssertNil(sut.project.independentTasks[5]?.first)
     }
 
@@ -78,7 +78,7 @@ class MProjectHelperTests: XCTestCase {
         let task1 = createTask(id: MTask.Id(1),
                                name: "Plot cleaning")
 
-        XCTAssertThrowsError(try sut.removeTask(taskId: task1.id, startDay: 0)) { error in
+        XCTAssertThrowsError(try sut.removeTask(task1, startDay: 0)) { error in
             XCTAssertEqual(error as? MEditingProjectError, .unexistingTasks([task1.id]))
         }
     }
@@ -105,13 +105,13 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertTrue(sut.isIndependent(task1))
         XCTAssertFalse(sut.isIndependent(task2))
 
-        try sut.removeTask(taskId: task1.id, startDay: task1StartDay)
+        try sut.removeTask(task1, startDay: task1StartDay)
         XCTAssertNil(sut.project.relationships.first(where: { $0.id == relationship1.id }))
         XCTAssertFalse(sut.isIndependent(task1))
         XCTAssertTrue(sut.isIndependent(task2))
 
-        XCTAssertEqual(sut.tasksSortedByDays()[0], [task3])
-        XCTAssertEqual(sut.tasksSortedByDays()[task1days + task1StartDay + UInt(gap)], [task2])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [task3])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[task1days + task1StartDay + UInt(gap)]!, [task2])
     }
 
     func testAddAndRemoveRelationships() throws {
@@ -190,7 +190,7 @@ class MProjectHelperTests: XCTestCase {
         let task6 = createTask(id: .init(6), days: 7)
 
         // no tasks added, no tasks to show
-        XCTAssertEqual(sut.tasksSortedByDays()[0], [])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [])
         try sut.addTask(task1, startDay: 0)
         try sut.addTask(task2, startDay: 0)
         try sut.addTask(task3, startDay: 0)
@@ -208,14 +208,14 @@ class MProjectHelperTests: XCTestCase {
                                         daysGap: -2)
 
         // no relationships added, all tasks start from day 1
-        XCTAssertEqual(sut.tasksSortedByDays()[0], [task1, task2, task3, task4, task5, task6])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [task1, task2, task3, task4, task5, task6])
 
         try sut.addRelationship(relationship1)
         try sut.addRelationship(relationship2)
         let list = sut.tasksSortedByDays()
-        XCTAssertEqual(list[0], [task1, task4, task5, task6])
-        XCTAssertEqual(list[9], [task2])
-        XCTAssertEqual(list[14], [task3])
+        XCTAssertListsAreEqual(list[0]!, [task1, task4, task5, task6])
+        XCTAssertListsAreEqual(list[9]!, [task2])
+        XCTAssertListsAreEqual(list[14]!, [task3])
     }
 
     func testTasksPositions2() throws {
@@ -226,7 +226,7 @@ class MProjectHelperTests: XCTestCase {
         let task3 = createTask(id: .init(3), days: 7)
 
         // no tasks added, no tasks to show
-        XCTAssertEqual(sut.tasksSortedByDays()[0], [])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [])
         let task1InitialDay: UInt = 0
         let task2InitialDay: UInt = 10
         let task3InitialDay: UInt = 0
@@ -238,9 +238,9 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertTrue(sut.isIndependent(task3))
 
         // no relationships added, all tasks start from day 1
-        XCTAssertEqual(sut.tasksSortedByDays()[task1InitialDay], [task1, task3])
-        XCTAssertEqual(sut.tasksSortedByDays()[task2InitialDay], [task2])
-        XCTAssertEqual(sut.tasksSortedByDays()[task3InitialDay], [task1, task3])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[task1InitialDay]!, [task1, task3])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[task2InitialDay]!, [task2])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[task3InitialDay]!, [task1, task3])
 
         let relationship1 = Relationship(id: .init(1),
                                         influencer: task1,
@@ -250,8 +250,8 @@ class MProjectHelperTests: XCTestCase {
         try sut.addRelationship(relationship1)
 
         let list = sut.tasksSortedByDays()
-        XCTAssertEqual(list[0], [task1, task3])
-        XCTAssertEqual(list[10], [task2])
+        XCTAssertListsAreEqual(list[0]!, [task1, task3])
+        XCTAssertListsAreEqual(list[10]!, [task2])
 
         XCTAssertEqual(sut.project.independentTasks[0]?.first, task1)
         XCTAssertEqual(sut.project.independentTasks[0]?.last, task3)
@@ -263,8 +263,8 @@ class MProjectHelperTests: XCTestCase {
                                         daysGap: Int(task3InitialDay) - Int(task2InitialDay))
 
         try sut.addRelationship(relationship2)
-        XCTAssertEqual(list[0], [task1, task3])
-        XCTAssertEqual(list[10], [task2])
+        XCTAssertListsAreEqual(list[0]!, [task1, task3])
+        XCTAssertListsAreEqual(list[10]!, [task2])
 
         XCTAssertEqual(sut.project.independentTasks[0]?.first, task1)
         XCTAssertTrue(sut.isIndependent(task1))
@@ -353,13 +353,13 @@ class MProjectHelperTests: XCTestCase {
                                        days: newDays,
                                        color: newColor)
 
-        XCTAssertEqual(sut.tasksSortedByDays()[0], [task1])
-        XCTAssertEqual(sut.tasksSortedByDays()[task1StartingDay + originalDays + 2], [task2])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [task1])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[task1StartingDay + originalDays + 2]!, [task2])
 
         try sut.editTask(replacingTask)
 
-        XCTAssertEqual(sut.tasksSortedByDays()[0], [replacingTask])
-        XCTAssertEqual(sut.tasksSortedByDays()[task1StartingDay + originalDays + 2], [task2])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [replacingTask])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[task1StartingDay + originalDays + 2]!, [task2])
     }
 
     // MARK: Private
@@ -384,5 +384,24 @@ class MProjectHelperTests: XCTestCase {
                      name: name,
                      days: days,
                      color: color)
+    }
+}
+
+extension MTask: Comparable {
+    public static func < (lhs: MTask, rhs: MTask) -> Bool {
+        lhs.id.id < rhs.id.id
+    }
+}
+
+// TO DO: Move these extensions to another target
+extension Array where Element: Comparable {
+    func containsSameElements(as other: [Element]) -> Bool {
+        return self.count == other.count && self.sorted() == other.sorted()
+    }
+}
+
+extension XCTest {
+    func XCTAssertListsAreEqual<T>(_ expression1: @autoclosure () throws -> [T], _ expression2: @autoclosure () throws -> [T], _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Comparable {
+        try XCTAssertTrue(expression1().containsSameElements(as: expression2()))
     }
 }
