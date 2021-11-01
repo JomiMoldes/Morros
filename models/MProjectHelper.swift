@@ -56,13 +56,13 @@ public class MProjectHelper: MProjectHelperProtocol {
         project.tasks.remove(task)
         let taskId = task.id
 
-        // if the task is influencer, we'll remove the relationship giving a startDay for the dependant to become independent
-        // if the task is dependant it won't affect the influencer
-        var dependantRelationships = [Relationship]()
+        // if the task is influencer, we'll remove the relationship giving a startDay for the dependent to become independent
+        // if the task is dependent it won't affect the influencer
+        var dependentRelationships = [Relationship]()
         var influencerRelationships = [Relationship]()
         project.relationships.forEach {
-            if $0.dependant.id == taskId {
-                dependantRelationships.append($0)
+            if $0.dependent.id == taskId {
+                dependentRelationships.append($0)
                 return
             }
             if $0.influencer.id == taskId {
@@ -70,7 +70,7 @@ public class MProjectHelper: MProjectHelperProtocol {
             }
         }
         
-        try dependantRelationships.forEach {
+        try dependentRelationships.forEach {
             try self.removeRelationship($0.id, dependentStartDay: nil)
         }
         try influencerRelationships.forEach {
@@ -86,8 +86,8 @@ public class MProjectHelper: MProjectHelperProtocol {
         try canAddRelationship(relationship)
         project.relationships.append(relationship)
 
-        // The dependant cannot be independent anymore
-        self.removeIndependentTask(relationship.dependant.id)
+        // The dependent cannot be independent anymore
+        self.removeIndependentTask(relationship.dependent.id)
     }
 
     public func removeRelationship(_ relationshipId: Relationship.Id, dependentStartDay: UInt?) throws {
@@ -96,9 +96,9 @@ public class MProjectHelper: MProjectHelperProtocol {
         }
         project.relationships.removeAll(where: { $0.id == relationshipId } )
 
-        // we make the dependant independent if it doesn't depend on other tasks
-        if let dependentStartDay = dependentStartDay, !self.dependsOnAnyTask(project, relationship.dependant) {
-            self.addTaskAsIndependent(relationship.dependant, startDay: dependentStartDay)
+        // we make the dependent independent if it doesn't depend on other tasks
+        if let dependentStartDay = dependentStartDay, !self.dependsOnAnyTask(project, relationship.dependent) {
+            self.addTaskAsIndependent(relationship.dependent, startDay: dependentStartDay)
         }
     }
 
@@ -149,7 +149,7 @@ private extension MProjectHelper {
     }
 
     private func getDistanceFromItsInfluencerInDays(task: MTask) -> Int {
-        guard let relationship = project.relationships.first(where: { $0.dependant.id == task.id })  else {
+        guard let relationship = project.relationships.first(where: { $0.dependent.id == task.id })  else {
             return Int(getStartDay(for: task))
         }
         return getDistanceFromItsInfluencerInDays(task: relationship.influencer) + Int(relationship.influencer.days) + relationship.daysGap
@@ -177,7 +177,7 @@ private extension MProjectHelper {
 
     private func dependsOnAnyTask(_ project: MProject, _ task: MTask) -> Bool {
         for relationship in project.relationships {
-            if relationship.dependant.id == task.id {
+            if relationship.dependent.id == task.id {
                 return true
             }
         }
@@ -188,7 +188,7 @@ private extension MProjectHelper {
         if project.relationships.contains(relationship) { throw MEditingProjectError.relationshipAlreadyExists }
         if project.relationships.first(where: { $0.id == relationship.id }) != nil { throw MEditingProjectError.relationshipIdRepeated }
         let t1 = relationship.influencer
-        let t2 = relationship.dependant
+        let t2 = relationship.dependent
         var unexistingTasks: [MTask.Id] = [MTask.Id]()
         if project.tasks.contains(t1) == false { unexistingTasks.append(t1.id) }
         if project.tasks.contains(t2) == false { unexistingTasks.append(t2.id) }
@@ -196,37 +196,37 @@ private extension MProjectHelper {
             throw MEditingProjectError.unexistingTasks(unexistingTasks)
         }
         // there shouldn't be a cycle reference
-        if influencerDependsOnDependant(influencer: t1, dependant: t2) {
+        if influencerDependsOndependent(influencer: t1, dependent: t2) {
             throw MEditingProjectError.cycleReference
         }
         // it already depends indirectly
-        if dependsIndirectly(influencer: t1, dependant: t2) {
+        if dependsIndirectly(influencer: t1, dependent: t2) {
             throw MEditingProjectError.taskAlreadyDependsOnInfluencerIndirectly
         }
     }
 
-    private func influencerDependsOnDependant(influencer: MTask, dependant: MTask) -> Bool {
-        let filtered = project.relationships.filter { $0.dependant.id == influencer.id }
+    private func influencerDependsOndependent(influencer: MTask, dependent: MTask) -> Bool {
+        let filtered = project.relationships.filter { $0.dependent.id == influencer.id }
         guard filtered.count > 0 else { return false }
         for relationship in filtered {
-            if relationship.influencer.id == dependant.id {
+            if relationship.influencer.id == dependent.id {
                 return true
             }
-            if influencerDependsOnDependant(influencer: relationship.influencer, dependant: dependant) {
+            if influencerDependsOndependent(influencer: relationship.influencer, dependent: dependent) {
                 return true
             }
         }
         return false
     }
 
-    private func dependsIndirectly(influencer: MTask, dependant: MTask) -> Bool {
-        let filtered = project.relationships.filter { $0.dependant.id == dependant.id }
-        guard filtered.count > 0 else { return false }
+    private func dependsIndirectly(influencer: MTask, dependent: MTask) -> Bool {
+        let filtered = project.relationships.filter { $0.dependent.id == dependent.id }
+        guard filtered.isEmpty == false else { return false }
         for relationship in filtered {
             if relationship.influencer.id == influencer.id {
                 return true
             }
-            if dependsIndirectly(influencer: influencer, dependant: relationship.influencer) {
+            if dependsIndirectly(influencer: influencer, dependent: relationship.influencer) {
                 return true
             }
         }

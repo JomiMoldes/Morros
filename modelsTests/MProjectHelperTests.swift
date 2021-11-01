@@ -83,7 +83,7 @@ class MProjectHelperTests: XCTestCase {
         }
     }
 
-    func testRemoveTask_ShouldRemoveRelationship() throws {
+    func testRemoveInfluencerTask_ShouldRemoveRelationship() throws {
         let sut = createSUT()
 
         let task1days: UInt = 8
@@ -98,7 +98,7 @@ class MProjectHelperTests: XCTestCase {
         let gap: Int = 2
         let relationship1 = Relationship(id: .init(1),
                                          influencer: task1,
-                                         dependant: task2,
+                                         dependent: task2,
                                          daysGap: gap)
         try sut.addRelationship(relationship1)
         XCTAssertNotNil(sut.project.relationships.first(where: { $0.id == relationship1.id }))
@@ -106,7 +106,7 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertFalse(sut.isIndependent(task2))
 
         try sut.removeTask(task1, startDay: task1StartDay)
-        XCTAssertNil(sut.project.relationships.first(where: { $0.id == relationship1.id }))
+        XCTAssertTrue(sut.project.relationships.isEmpty)
         XCTAssertFalse(sut.isIndependent(task1))
         XCTAssertTrue(sut.isIndependent(task2))
 
@@ -114,47 +114,111 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertListsAreEqual(sut.tasksSortedByDays()[task1days + task1StartDay + UInt(gap)]!, [task2])
     }
 
-    func testAddAndRemoveRelationships() throws {
+    func testRemoveDependentTask_ShouldRemoveRelationship() throws {
+        let sut = createSUT()
+
+        let task1days: UInt = 8
+        let task1StartDay: UInt = 2
+        let task1 = createTask(id: MTask.Id(1), days: task1days)
+        let task2 = createTask(id: MTask.Id(2))
+        let task3 = createTask(id: MTask.Id(3))
+        try sut.addTask(task1, startDay: task1StartDay)
+        try sut.addTask(task2, startDay: 0)
+        try sut.addTask(task3, startDay: 0)
+
+        let gap: Int = 2
+        let relationship1 = Relationship(id: .init(1),
+                                         influencer: task1,
+                                         dependent: task2,
+                                         daysGap: gap)
+        try sut.addRelationship(relationship1)
+        XCTAssertNotNil(sut.project.relationships.first(where: { $0.id == relationship1.id }))
+        XCTAssertTrue(sut.isIndependent(task1))
+        XCTAssertFalse(sut.isIndependent(task2))
+
+        try sut.removeTask(task2, startDay: task1StartDay + task2.days)
+        XCTAssertTrue(sut.project.relationships.isEmpty)
+
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [task3])
+        XCTAssertNil(sut.tasksSortedByDays()[task1days + task1StartDay + UInt(gap)])
+    }
+
+    func test_RemoveRelationship_Should_MakeDependentIndependent() throws {
         let sut = createSUT()
 
         let influencerStartDay: UInt = 1
-        let dependantStartDay: UInt = 1
+        let dependentStartDay: UInt = 1
         let gap: Int = 2
         let influencer = createTask(id: MTask.Id(1), days: 5)
-        let dependant = createTask(id: MTask.Id(2), days: 3)
+        let dependent = createTask(id: MTask.Id(2), days: 3)
 
         let relationship = Relationship(id: .init(1),
                                          influencer: influencer,
-                                         dependant: dependant,
+                                         dependent: dependent,
                                          daysGap: gap)
         try sut.addTask(influencer, startDay: influencerStartDay)
-        try sut.addTask(dependant, startDay: dependantStartDay)
+        try sut.addTask(dependent, startDay: dependentStartDay)
         try sut.addRelationship(relationship)
         XCTAssertEqual(sut.project.relationships, [relationship])
         let startDay = Int(influencerStartDay + influencer.days) + gap
-        try sut.removeRelationship(relationship.id, dependentStartDay: startDay >= 0 ? UInt(startDay) : 0)
+        try sut.removeRelationship(relationship.id, dependentStartDay: UInt(startDay))
         XCTAssertEqual(sut.project.relationships, [])
         XCTAssertEqual(sut.project.independentTasks[1], [influencer])
-        XCTAssertEqual(sut.project.independentTasks[8], [dependant])
+        // it should make the dependent task independent as it doesn't depend on any task now
+        XCTAssertEqual(sut.project.independentTasks[8], [dependent])
     }
 
+    func test_RemoveRelationship_Should_keepdependentasdependent() throws {
+        // GIVEN one task depends on other two
+        let sut = createSUT()
+
+        let influencerStartDay: UInt = 1
+        let dependentStartDay: UInt = 1
+        let gap: Int = 2
+        let influencer = createTask(id: MTask.Id(1), days: 5)
+        let dependent = createTask(id: MTask.Id(2), days: 3)
+        let secondInfluencer = createTask(id: MTask.Id(3), days: 5)
+        let relationship1 = Relationship(id: .init(1),
+                                         influencer: influencer,
+                                         dependent: dependent,
+                                         daysGap: gap)
+        let relationship2 = Relationship(id: .init(3),
+                                         influencer: secondInfluencer,
+                                         dependent: dependent,
+                                         daysGap: gap)
+        try sut.addTask(influencer, startDay: influencerStartDay)
+        try sut.addTask(dependent, startDay: dependentStartDay)
+        try sut.addTask(secondInfluencer, startDay: influencerStartDay)
+        try sut.addRelationship(relationship1)
+        try sut.addRelationship(relationship2)
+        XCTAssertEqual(sut.project.relationships, [relationship1, relationship2])
+        let startDay = Int(influencerStartDay + influencer.days) + gap
+
+        // WHEN removing one relationship
+        try sut.removeRelationship(relationship1.id, dependentStartDay: UInt(startDay))
+        XCTAssertEqual(sut.project.relationships, [relationship2])
+        XCTAssertEqual(sut.project.independentTasks[1], [influencer, secondInfluencer])
+        // IT should NOT make the dependent task independent as it STILL depends on secondInfluencer
+        XCTAssertNil(sut.project.independentTasks[8])
+    }
+// TO DO: what happens if, having 2 influencers one of those moves in time that is needs to move in time the dependent? How is the relationships going to end?
     func testAddingRelationships_Errors() throws {
         let sut = createSUT()
 
         let influencer = createTask(id: MTask.Id(1), days: 5)
-        let dependant = createTask(id: MTask.Id(2), days: 3)
+        let dependent = createTask(id: MTask.Id(2), days: 3)
 
         let relationship = Relationship(id: .init(1),
                                          influencer: influencer,
-                                         dependant: dependant,
+                                         dependent: dependent,
                                          daysGap: 0)
         XCTAssertThrowsError(try sut.addRelationship(relationship)) { error in
-            XCTAssertEqual(error as? MEditingProjectError, .unexistingTasks([influencer.id, dependant.id]))
+            XCTAssertEqual(error as? MEditingProjectError, .unexistingTasks([influencer.id, dependent.id]))
         }
 
         // adding tasks
         try sut.addTask(influencer, startDay: 0)
-        try sut.addTask(dependant, startDay: 0)
+        try sut.addTask(dependent, startDay: 0)
 
         try sut.addRelationship(relationship)
 
@@ -168,12 +232,12 @@ class MProjectHelperTests: XCTestCase {
         let task4 = createTask(id: .init(4))
         let relationship2 = Relationship(id: .init(1),
                                          influencer: task3,
-                                         dependant: task4,
+                                         dependent: task4,
                                          daysGap: 0)
         XCTAssertThrowsError(try sut.addRelationship(relationship2)) { error in
             XCTAssertEqual(error as? MEditingProjectError, .relationshipIdRepeated)
         }
-        let nonExistingRelationship = Relationship(id: .init(2), influencer: createTask(id: .init(9)), dependant: createTask(id: .init(10)), daysGap: 0)
+        let nonExistingRelationship = Relationship(id: .init(2), influencer: createTask(id: .init(9)), dependent: createTask(id: .init(10)), daysGap: 0)
         XCTAssertThrowsError(try sut.removeRelationship(nonExistingRelationship.id, dependentStartDay: 1)) { error in
             XCTAssertEqual(error as? MEditingProjectError, .unexistingRelationship(nonExistingRelationship.id))
         }
@@ -200,11 +264,11 @@ class MProjectHelperTests: XCTestCase {
 
         let relationship1 = Relationship(id: .init(1),
                                         influencer: task1,
-                                        dependant: task2,
+                                        dependent: task2,
                                         daysGap: 2)
         let relationship2 = Relationship(id: .init(2),
                                         influencer: task2,
-                                        dependant: task3,
+                                        dependent: task3,
                                         daysGap: -2)
 
         // no relationships added, all tasks start from day 1
@@ -244,7 +308,7 @@ class MProjectHelperTests: XCTestCase {
 
         let relationship1 = Relationship(id: .init(1),
                                         influencer: task1,
-                                        dependant: task2,
+                                        dependent: task2,
                                         daysGap: Int(task2InitialDay - task1InitialDay - task1.days))
 
         try sut.addRelationship(relationship1)
@@ -259,7 +323,7 @@ class MProjectHelperTests: XCTestCase {
 
         let relationship2 = Relationship(id: .init(2),
                                         influencer: task2,
-                                        dependant: task3,
+                                        dependent: task3,
                                         daysGap: Int(task3InitialDay) - Int(task2InitialDay))
 
         try sut.addRelationship(relationship2)
@@ -292,15 +356,15 @@ class MProjectHelperTests: XCTestCase {
 
         let relationship1 = Relationship(id: .init(1),
                                         influencer: task1,
-                                        dependant: task2,
+                                        dependent: task2,
                                         daysGap: 2)
         let relationship2 = Relationship(id: .init(2),
                                         influencer: task2,
-                                        dependant: task3,
+                                        dependent: task3,
                                         daysGap: -2)
         let relationship3 = Relationship(id: .init(3),
                                         influencer: task3,
-                                        dependant: task1,
+                                        dependent: task1,
                                         daysGap: 0)
 
         try sut.addRelationship(relationship1)
@@ -311,9 +375,9 @@ class MProjectHelperTests: XCTestCase {
             XCTAssertEqual(error as? MEditingProjectError, .cycleReference)
         }
 
-        let relationship4 = Relationship(id: .init(3),
+        let relationship4 = Relationship(id: .init(4),
                                         influencer: task1,
-                                        dependant: task3,
+                                        dependent: task3,
                                         daysGap: 0)
 
         // task3 already depends on task1 through task2, so no need to add this relationship
@@ -344,7 +408,7 @@ class MProjectHelperTests: XCTestCase {
         try sut.addTask(task1, startDay: task1StartingDay)
         try sut.addTask(task2, startDay: 0)
 
-        let relationship = Relationship(id: .init(1), influencer: task1, dependant: task2, daysGap: 2)
+        let relationship = Relationship(id: .init(1), influencer: task1, dependent: task2, daysGap: 2)
 
         try sut.addRelationship(relationship)
 
@@ -360,6 +424,18 @@ class MProjectHelperTests: XCTestCase {
 
         XCTAssertListsAreEqual(sut.tasksSortedByDays()[0]!, [replacingTask])
         XCTAssertListsAreEqual(sut.tasksSortedByDays()[task1StartingDay + originalDays + 2]!, [task2])
+    }
+
+    func test_EditTask_Errors() throws {
+        // GIVEN there is no task with X id
+        let sut = createSUT()
+        let replacingTask = createTask(id: .init(1))
+
+        // WHEN trying to replace it
+        XCTAssertThrowsError(try sut.editTask(replacingTask)) { error in
+            // IT should fail with the .unexistingTask error
+            XCTAssertEqual(error as? MEditingProjectError, .unexistingTasks([replacingTask.id]))
+        }
     }
 
     // MARK: Private

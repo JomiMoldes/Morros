@@ -65,16 +65,16 @@ public struct Relationship: Equatable {
     }
     public let id: Relationship.Id
     public let influencer: MTask
-    public let dependant: MTask
+    public let dependent: MTask
     public let daysGap: Int
 
     public init(id: Id,
                 influencer: MTask,
-                dependant: MTask,
+                dependent: MTask,
                 daysGap: Int) {
         self.id = id
         self.influencer = influencer
-        self.dependant = dependant
+        self.dependent = dependent
         self.daysGap = daysGap
     }
 }
