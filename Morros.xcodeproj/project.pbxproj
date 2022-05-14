@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		890B4BD6281EE8580005B985 /* MRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890B4BD5281EE8580005B985 /* MRelationship.swift */; };
+		890B4BD8281EE87E0005B985 /* MTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890B4BD7281EE87E0005B985 /* MTask.swift */; };
 		8950E2E626F77B5800C096D7 /* ModelsInterfaces.h in Headers */ = {isa = PBXBuildFile; fileRef = 8950E2E426F77B5800C096D7 /* ModelsInterfaces.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8950E2E926F77B5800C096D7 /* ModelsInterfaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */; };
 		8950E2EA26F77B5800C096D7 /* ModelsInterfaces.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8950E2EF26F77B8200C096D7 /* MProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950E2EE26F77B8200C096D7 /* MProject.swift */; };
-		8950E2F126F77BC800C096D7 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950E2F026F77BC800C096D7 /* Palette.swift */; };
+		8950E2F126F77BC800C096D7 /* MPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8950E2F026F77BC800C096D7 /* MPalette.swift */; };
 		8950E2F826F77C2600C096D7 /* ModelsInterfaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */; };
 		8970991026D2DE4D001FD2F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970990F26D2DE4D001FD2F2 /* AppDelegate.swift */; };
 		8970991226D2DE4D001FD2F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8970991126D2DE4D001FD2F2 /* SceneDelegate.swift */; };
@@ -90,11 +92,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		890B4BD5281EE8580005B985 /* MRelationship.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRelationship.swift; sourceTree = "<group>"; };
+		890B4BD7281EE87E0005B985 /* MTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTask.swift; sourceTree = "<group>"; };
+		890B4BD9281EE91A0005B985 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8950E2E226F77B5700C096D7 /* ModelsInterfaces.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ModelsInterfaces.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8950E2E426F77B5800C096D7 /* ModelsInterfaces.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelsInterfaces.h; sourceTree = "<group>"; };
 		8950E2E526F77B5800C096D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8950E2EE26F77B8200C096D7 /* MProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProject.swift; sourceTree = "<group>"; };
-		8950E2F026F77BC800C096D7 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		8950E2F026F77BC800C096D7 /* MPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPalette.swift; sourceTree = "<group>"; };
 		8970990C26D2DE4D001FD2F2 /* Morros.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Morros.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8970990F26D2DE4D001FD2F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8970991126D2DE4D001FD2F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -174,7 +179,9 @@
 				8950E2E426F77B5800C096D7 /* ModelsInterfaces.h */,
 				8950E2E526F77B5800C096D7 /* Info.plist */,
 				8950E2EE26F77B8200C096D7 /* MProject.swift */,
-				8950E2F026F77BC800C096D7 /* Palette.swift */,
+				8950E2F026F77BC800C096D7 /* MPalette.swift */,
+				890B4BD5281EE8580005B985 /* MRelationship.swift */,
+				890B4BD7281EE87E0005B985 /* MTask.swift */,
 			);
 			path = ModelsInterfaces;
 			sourceTree = "<group>";
@@ -189,6 +196,7 @@
 		8970990326D2DE4D001FD2F2 = {
 			isa = PBXGroup;
 			children = (
+				890B4BD9281EE91A0005B985 /* README.md */,
 				8970990E26D2DE4D001FD2F2 /* Morros */,
 				8970992526D2DE50001FD2F2 /* MorrosTests */,
 				8970993026D2DE50001FD2F2 /* MorrosUITests */,
@@ -506,7 +514,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8950E2F126F77BC800C096D7 /* Palette.swift in Sources */,
+				8950E2F126F77BC800C096D7 /* MPalette.swift in Sources */,
+				890B4BD6281EE8580005B985 /* MRelationship.swift in Sources */,
+				890B4BD8281EE87E0005B985 /* MTask.swift in Sources */,
 				8950E2EF26F77B8200C096D7 /* MProject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -716,7 +726,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -771,7 +781,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -829,7 +839,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BNC7UR7VG4;
 				INFOPLIST_FILE = MorrosTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -851,7 +861,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BNC7UR7VG4;
 				INFOPLIST_FILE = MorrosTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

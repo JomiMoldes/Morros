@@ -7,6 +7,6 @@
 
 import Foundation
 
-public enum Palette {
+public enum MPalette {
     case red, yellow, blue, orange, grey, green
 }
