@@ -12,7 +12,7 @@ public struct MProject {
     public let id: Identifier<Self>
     public let name: String
     public var tasks: Set<MTask> = Set<MTask>()
-    public var relationships: [MRelationship] = [MRelationship]()
+    public var relationships: Set<MRelationship> = Set<MRelationship>()
     public let startDate: Date
     public var independentTasks: [UInt: [MTask]] = [UInt: [MTask]]()
 

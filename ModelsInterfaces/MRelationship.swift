@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MRelationship: Equatable {
+public struct MRelationship: Equatable, Hashable {
 
     public let id: Identifier<Self>
     public let influencer: MTask

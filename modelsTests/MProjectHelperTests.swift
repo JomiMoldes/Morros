@@ -222,7 +222,7 @@ class MProjectHelperTests: XCTestCase {
         try sut.addRelationship(relationship)
         XCTAssertEqual(sut.project.relationships, [relationship])
         let startDay = Int(influencerStartDay + influencer.days) + gap
-        try sut.removeRelationship(relationship.id, dependentStartDay: UInt(startDay))
+        try sut.removeRelationship(relationship, dependentStartDay: UInt(startDay))
         XCTAssertEqual(sut.project.relationships, [])
         XCTAssertEqual(sut.project.independentTasks[1], [influencer])
         // it should make the dependent task independent as it doesn't depend on any task now
@@ -260,7 +260,7 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertListsAreEqual(sut.tasksSortedByDays()[influencerDays + influencerStartDay + UInt(gap)]!, [dependent])
 
         // WHEN removing one relationship
-        try sut.removeRelationship(relationship1.id, dependentStartDay: UInt(startDay))
+        try sut.removeRelationship(relationship1, dependentStartDay: UInt(startDay))
         XCTAssertEqual(sut.project.relationships, [relationship2])
         XCTAssertEqual(sut.project.independentTasks[1], [influencer, secondInfluencer])
         // IT should NOT make the dependent task independent as it STILL depends on secondInfluencer
@@ -272,7 +272,7 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertListsAreEqual(sut.tasksSortedByDays()[influencerDays + influencerStartDay + UInt(gap)]!, [dependent])
     }
 
-    func test_RemoveTask_Should_keepDependentasDependent() throws {
+    func test_RemoveTask_Should_keepDependentAsDependent() throws {
         // GIVEN one task depends on other two
         let sut = createSUT()
 
@@ -296,13 +296,14 @@ class MProjectHelperTests: XCTestCase {
         try sut.addTask(influencer, startDay: influencerStartDay)
         try sut.addTask(dependent, startDay: dependentStartDay)
         try sut.addTask(secondInfluencer, startDay: secondInfluencerStartDay)
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[1]!, [influencer])
         try sut.addRelationship(relationship1)
         try sut.addRelationship(relationship2)
         XCTAssertEqual(sut.project.relationships, [relationship1, relationship2])
 
         XCTAssertListsAreEqual(sut.tasksSortedByDays()[1]!, [influencer])
         XCTAssertListsAreEqual(sut.tasksSortedByDays()[3]!, [secondInfluencer])
-        XCTAssertListsAreEqual(sut.tasksSortedByDays()[influencerDays + influencerStartDay + UInt(gap)]!, [dependent])
+        XCTAssertListsAreEqual(sut.tasksSortedByDays()[influencerDays + max(influencerStartDay, secondInfluencerStartDay) + UInt(gap)]!, [dependent])
 
         // WHEN removing one relationship
         try sut.removeTask(influencer)
@@ -358,7 +359,7 @@ class MProjectHelperTests: XCTestCase {
             XCTAssertEqual(error as? MEditingProjectError, .relationshipIdRepeated)
         }
         let nonExistingRelationship = MRelationship(id: .init(2), influencer: createTask(id: .init(9)), dependent: createTask(id: .init(10)), daysGap: 0)
-        XCTAssertThrowsError(try sut.removeRelationship(nonExistingRelationship.id, dependentStartDay: 1)) { error in
+        XCTAssertThrowsError(try sut.removeRelationship(nonExistingRelationship, dependentStartDay: 1)) { error in
             XCTAssertEqual(error as? MEditingProjectError, .unexistingRelationship(nonExistingRelationship.id))
         }
     }
@@ -455,7 +456,7 @@ class MProjectHelperTests: XCTestCase {
         XCTAssertFalse(sut.isIndependent(task2))
         XCTAssertFalse(sut.isIndependent(task3))
 
-        try sut.removeRelationship(relationship2.id, dependentStartDay: 0)
+        try sut.removeRelationship(relationship2, dependentStartDay: 0)
         XCTAssertTrue(sut.isIndependent(task1))
         XCTAssertFalse(sut.isIndependent(task2))
         XCTAssertTrue(sut.isIndependent(task3))

@@ -17,7 +17,7 @@ public protocol MProjectHelperProtocol {
     func addTask(_ task: MTask, startDay: UInt) throws
     func removeTask(_ task: MTask) throws
     func addRelationship(_ relationship: MRelationship) throws
-    func removeRelationship(_ relationshipId: Identifier<MRelationship>, dependentStartDay: UInt?) throws
+    func removeRelationship(_ relationship: MRelationship, dependentStartDay: UInt?) throws
     func isIndependent(_ task: MTask) -> Bool
     func editTask(_ modifiedTask: MTask) throws
 }
@@ -71,11 +71,11 @@ public class MProjectHelper: MProjectHelperProtocol {
         }
         
         try dependentRelationships.forEach {
-            try self.removeRelationship($0.id, dependentStartDay: nil)
+            try self.removeRelationship($0, dependentStartDay: nil)
         }
         try influencerRelationships.forEach {
             let dependentStartDay = Int(startDay + task.days) + $0.daysGap
-            try self.removeRelationship($0.id,
+            try self.removeRelationship($0,
                                         dependentStartDay: dependentStartDay >= 0 ? UInt(dependentStartDay) : 0)
         }
 
@@ -84,18 +84,19 @@ public class MProjectHelper: MProjectHelperProtocol {
 
     public func addRelationship(_ relationship: MRelationship) throws {
         try canAddRelationship(relationship)
-        project.relationships.append(relationship)
+        project.relationships.insert(relationship)
 
         // The dependent cannot be independent anymore
         self.removeIndependentTask(relationship.dependent.id)
     }
 
     // TO DO: Have a test to assert that if I'm removing a task, when it removes the relationship it doesn't make independent the task I'm removing.
-    public func removeRelationship(_ relationshipId: Identifier<MRelationship>, dependentStartDay: UInt?) throws {
-        guard let relationship = project.relationships.first(where: { $0.id == relationshipId }) else {
-            throw MEditingProjectError.unexistingRelationship(relationshipId)
-        }
-        project.relationships.removeAll(where: { $0.id == relationshipId } )
+    public func removeRelationship(_ relationship: MRelationship, dependentStartDay: UInt?) throws {
+//        guard let relationship = project.relationships.first(where: { $0.id == relationshipId }) else {
+//            throw MEditingProjectError.unexistingRelationship(relationshipId)
+//        }
+        project.relationships.remove(relationship)
+//        project.relationships.removeAll(where: { $0.id == relationshipId } )
 
         // we make the dependent independent if it doesn't depend on other tasks and if it is not the one we are removing
         if let dependentStartDay = dependentStartDay,
