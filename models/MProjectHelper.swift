@@ -92,12 +92,10 @@ public class MProjectHelper: MProjectHelperProtocol {
 
     // TO DO: Have a test to assert that if I'm removing a task, when it removes the relationship it doesn't make independent the task I'm removing.
     public func removeRelationship(_ relationship: MRelationship, dependentStartDay: UInt?) throws {
-//        guard let relationship = project.relationships.first(where: { $0.id == relationshipId }) else {
-//            throw MEditingProjectError.unexistingRelationship(relationshipId)
-//        }
+        guard project.relationships.contains(relationship) else {
+            throw MEditingProjectError.unexistingRelationship(relationship.id)
+        }
         project.relationships.remove(relationship)
-//        project.relationships.removeAll(where: { $0.id == relationshipId } )
-
         // we make the dependent independent if it doesn't depend on other tasks and if it is not the one we are removing
         if let dependentStartDay = dependentStartDay,
            !self.dependsOnAnyTask(project, relationship.dependent) {
@@ -110,7 +108,7 @@ public class MProjectHelper: MProjectHelperProtocol {
         var dic: [UInt: [MTask]] = [UInt: [MTask]]()
         dic[0] = [MTask]()
         project.tasks.forEach { task in
-            let days = UInt(getDistanceFromItsInfluencerInDays(task: task))
+            let days = UInt(getHighestDistanceFromItsInfluencersInDays(task: task))
             if dic.index(forKey: days) == nil {
                 dic[days] = [MTask]()
             }
@@ -165,11 +163,18 @@ private extension MProjectHelper {
         }
     }
 
-    private func getDistanceFromItsInfluencerInDays(task: MTask) -> Int {
-        guard let relationship = project.relationships.first(where: { $0.dependent.id == task.id })  else {
+    private func getHighestDistanceFromItsInfluencersInDays(task: MTask) -> Int {
+        let relationships = project.relationships.filter { $0.dependent.id == task.id }
+        guard relationships.isEmpty == false else {
             return Int(getStartDay(for: task))
         }
-        return getDistanceFromItsInfluencerInDays(task: relationship.influencer) + Int(relationship.influencer.days) + relationship.daysGap
+        
+        var distances: [Int] = []
+        relationships.forEach {
+            distances.append(getHighestDistanceFromItsInfluencersInDays(task: $0.influencer) + Int($0.influencer.days) + $0.daysGap)
+        }
+        let maximum = distances.max()
+        return maximum ?? 0
     }
 
     private func getStartDay(for task: MTask) -> UInt {

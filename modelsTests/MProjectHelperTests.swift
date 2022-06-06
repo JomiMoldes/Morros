@@ -279,12 +279,13 @@ class MProjectHelperTests: XCTestCase {
         let influencerDays: UInt = 5
         let influencerStartDay: UInt = 1
         let secondInfluencerStartDay: UInt = 3
-        let secondInfluencerDays: UInt = 5
-        let dependentStartDay: UInt = 1
+        let secondInfluencerDays: UInt = 6
+        let dependentStartDay: UInt = 2
         let gap: Int = 2
-        let influencer = createTask(id: .init(1), days: influencerDays)
-        let dependent = createTask(id: .init(2), days: 3)
-        let secondInfluencer = createTask(id: .init(3), days: secondInfluencerDays)
+        let gap2: Int = 3
+        let influencer = createTask(id: .init(1), name: "First Influencer", days: influencerDays)
+        let dependent = createTask(id: .init(2), name: "Dependent", days: 3)
+        let secondInfluencer = createTask(id: .init(3), name: "Second Influencer", days: secondInfluencerDays)
         let relationship1 = MRelationship(id: .init(1),
                                          influencer: influencer,
                                          dependent: dependent,
@@ -292,7 +293,7 @@ class MProjectHelperTests: XCTestCase {
         let relationship2 = MRelationship(id: .init(3),
                                          influencer: secondInfluencer,
                                          dependent: dependent,
-                                         daysGap: gap)
+                                         daysGap: gap2)
         try sut.addTask(influencer, startDay: influencerStartDay)
         try sut.addTask(dependent, startDay: dependentStartDay)
         try sut.addTask(secondInfluencer, startDay: secondInfluencerStartDay)
@@ -301,9 +302,15 @@ class MProjectHelperTests: XCTestCase {
         try sut.addRelationship(relationship2)
         XCTAssertEqual(sut.project.relationships, [relationship1, relationship2])
 
-        XCTAssertListsAreEqual(sut.tasksSortedByDays()[1]!, [influencer])
-        XCTAssertListsAreEqual(sut.tasksSortedByDays()[3]!, [secondInfluencer])
-        XCTAssertListsAreEqual(sut.tasksSortedByDays()[influencerDays + max(influencerStartDay, secondInfluencerStartDay) + UInt(gap)]!, [dependent])
+        let tasksSortedByDays = sut.tasksSortedByDays()
+        XCTAssertListsAreEqual(tasksSortedByDays[1]!, [influencer])
+        XCTAssertListsAreEqual(tasksSortedByDays[3]!, [secondInfluencer])
+        
+        if influencerStartDay + influencerDays > secondInfluencerStartDay + secondInfluencerDays {
+            XCTAssertListsAreEqual(tasksSortedByDays[influencerStartDay + influencerDays + UInt(gap)]!, [dependent])
+        } else {
+            XCTAssertListsAreEqual(tasksSortedByDays[secondInfluencerStartDay + secondInfluencerDays + UInt(gap2)]!, [dependent])
+        }
 
         // WHEN removing one relationship
         try sut.removeTask(influencer)
@@ -317,7 +324,7 @@ class MProjectHelperTests: XCTestCase {
         let firstDayList = try XCTUnwrap(sut.tasksSortedByDays()[3])
         XCTAssertListsAreEqual(firstDayList, [secondInfluencer])
         // It should define when the dependent task starts depending on its new only influencer.
-        let dependentDayList = try XCTUnwrap(sut.tasksSortedByDays()[secondInfluencerDays + secondInfluencerStartDay + UInt(gap)])
+        let dependentDayList = try XCTUnwrap(sut.tasksSortedByDays()[secondInfluencerDays + secondInfluencerStartDay + UInt(gap2)])
         XCTAssertListsAreEqual(dependentDayList, [dependent])
     }
 
