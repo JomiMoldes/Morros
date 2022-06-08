@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37E9AA297D7FF10FE3FC8D5C /* Pods_Morros.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDEB9FC49F2089198CFDC3F /* Pods_Morros.framework */; };
 		890B4BD6281EE8580005B985 /* MRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890B4BD5281EE8580005B985 /* MRelationship.swift */; };
 		890B4BD8281EE87E0005B985 /* MTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 890B4BD7281EE87E0005B985 /* MTask.swift */; };
 		8950E2E626F77B5800C096D7 /* ModelsInterfaces.h in Headers */ = {isa = PBXBuildFile; fileRef = 8950E2E426F77B5800C096D7 /* ModelsInterfaces.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -121,6 +122,9 @@
 		8970995726D2DEBB001FD2F2 /* MProjectHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProjectHelperTests.swift; sourceTree = "<group>"; };
 		8970995926D2DEBB001FD2F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8970996026D2DF43001FD2F2 /* MProjectHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MProjectHelper.swift; sourceTree = "<group>"; };
+		C03861E7625290EE1C51E18F /* Pods-Morros.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Morros.release.xcconfig"; path = "Target Support Files/Pods-Morros/Pods-Morros.release.xcconfig"; sourceTree = "<group>"; };
+		DBDEB9FC49F2089198CFDC3F /* Pods_Morros.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Morros.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC22742F3417465232210F52 /* Pods-Morros.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Morros.debug.xcconfig"; path = "Target Support Files/Pods-Morros/Pods-Morros.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +141,7 @@
 			files = (
 				8950E2E926F77B5800C096D7 /* ModelsInterfaces.framework in Frameworks */,
 				8970994B26D2DE93001FD2F2 /* models.framework in Frameworks */,
+				37E9AA297D7FF10FE3FC8D5C /* Pods_Morros.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +194,7 @@
 		8950E2F226F77BED00C096D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBDEB9FC49F2089198CFDC3F /* Pods_Morros.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -205,6 +211,7 @@
 				8950E2E326F77B5800C096D7 /* ModelsInterfaces */,
 				8970990D26D2DE4D001FD2F2 /* Products */,
 				8950E2F226F77BED00C096D7 /* Frameworks */,
+				BAE2F43E3C9E91DE5ACDE1C8 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -272,6 +279,16 @@
 			path = modelsTests;
 			sourceTree = "<group>";
 		};
+		BAE2F43E3C9E91DE5ACDE1C8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FC22742F3417465232210F52 /* Pods-Morros.debug.xcconfig */,
+				C03861E7625290EE1C51E18F /* Pods-Morros.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -316,10 +333,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8970993626D2DE50001FD2F2 /* Build configuration list for PBXNativeTarget "Morros" */;
 			buildPhases = (
+				7A1AE0F621E4E7BB635A087B /* [CP] Check Pods Manifest.lock */,
 				8970990826D2DE4D001FD2F2 /* Sources */,
 				8970990926D2DE4D001FD2F2 /* Frameworks */,
 				8970990A26D2DE4D001FD2F2 /* Resources */,
 				8970995026D2DE93001FD2F2 /* Embed Frameworks */,
+				7704FCD1FF5E7F3F84F9E889 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -508,6 +527,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7704FCD1FF5E7F3F84F9E889 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Morros/Pods-Morros-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Morros/Pods-Morros-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Morros/Pods-Morros-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A1AE0F621E4E7BB635A087B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Morros-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8950E2DE26F77B5700C096D7 /* Sources */ = {
@@ -793,6 +854,7 @@
 		};
 		8970993726D2DE50001FD2F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC22742F3417465232210F52 /* Pods-Morros.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -813,6 +875,7 @@
 		};
 		8970993826D2DE50001FD2F2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C03861E7625290EE1C51E18F /* Pods-Morros.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
